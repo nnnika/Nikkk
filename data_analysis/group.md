@@ -1,4 +1,5 @@
 # 利用 Pandas 进行分类数据编码的十种方式
+感觉最好用的是pd.cut()
 
 
 ## 连续型数据的转换
@@ -35,8 +36,7 @@ df3['Score_Label'] = df3['Score'].apply(lambda x: 'A' if x > 90 else ('B' if 90 
 ###  pd.cut
 df4 = df.copy()
 bins = [0, 59, 70, 80, 100]
-df4['Score_Label'] = pd.cut(df4['Score'], bins)
-df4['Score_Label_new'] = pd.cut(df4['Score'], bins, labels=['low', 'middle', 'good', 'perfect'])
+df4['Score_Label'] = pd.cut(df4['Score'], bins, labels=['low', 'middle', 'good', 'perfect'])
 
 ### sklearn 二值化
 df5 = df.copy()
