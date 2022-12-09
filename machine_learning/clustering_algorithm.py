@@ -23,7 +23,9 @@ pyplot.scatter(X[row_ix2, 0], X[row_ix2, 1], marker='.', color='red', s=8)
 pyplot.show()
 pyplot.close()
 
-# 亲和力传播聚类
+# -------------------------------------------------------------------------------- #
+
+# 亲和力传播聚类 AffinityPropagation
 from numpy import unique
 from numpy import where
 from sklearn.datasets import make_classification

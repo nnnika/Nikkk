@@ -4,7 +4,7 @@ https://blog.csdn.net/lsxxx2011/article/details/124995681
 将正常数据与异常值或异常分开可能会被认为是聚类问题； 根据自然行为将集群分开是一个集群问题，称为市场细分。
 ## scikit-learn
 scikit-learn 库提供了一套不同的聚类算法供选择。下面列出了10种比较流行的算法：
-1. 亲和力传播
+1. 亲和力传播 AffinityPropagation
 2. 聚合聚类
 3. BIRCH
 4. DBSCAN

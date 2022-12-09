@@ -53,6 +53,29 @@ f.close()
 #      如果需要更好的控制输出，而print不能满足需求，sys.stdout，sys.stdin，sys.stderr就是你需要的
 
 
+# 元组 tuple()
+a = () = (name, ) = name,
+# 创建元组后不能修改内容（替换、删除其中的元素），内存占用比列表list（）小
+# 循环访问所有记录并展开到一组变量的方法：
+portfolio = []
+total = 0.0
+for name, shares, price in portfolio:
+    total += shares * price
+
+# 集合 set()
+# 集合是无序的，无法通过数字进行索引，集合中的元素不能重复， 操作：
+s = set([3, 5, 9, 10])
+t = set("Hello")
+# 支持标准操作：
+'''
+并集： a = t | s
+交集： b = t & s
+差集： c = t - s
+对称差集：d = t ^ s （d = ~b）
+'''
+
+# 字典 dict()
+
 
 
 
