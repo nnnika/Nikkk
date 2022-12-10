@@ -56,6 +56,34 @@ seaborn.boxplot(x=None, y=None, hue=None, data=None, order=None, hue_order=None,
             radius=1, counterclock=True, wedgeprops=None(中间挖洞{width: 0.4}), textprops=None, center=(0, 0), \ 
             frame=False, rotatelabels=False, *, normalize=None, data=None)
 
+## 雷达图（聚类）
+    1. 设置每个数据点的显示位置，在雷达图上用角度表示
+        `angles=np.linspace(0, 2*np.pi,len(values), endpoint=False)`
+    2. 拼接数据首尾，使图形中线条封闭
+        `values=np.concatenate((values,[values[0]]))`
+        `angles=np.concatenate((angles,[angles[0]]))`
+    3. 绘图
+        `fig=plt.figure()`
+    4. 设置为极坐标格式
+        `ax = fig.add_subplot(111, polar=True)`
+    5. 绘制折线图
+        `ax.plot(angles, values, 'o-', linewidth=2)`
+    6. 设置为极坐标格式
+        `ax = fig.add_subplot(111, polar=True)`
+    7. 随机取不同的颜色
+        `colors = np.random.choice(['r', 'g', 'b', 'y', 'k', 'orange'], replace = False, size = len(centers))`
+    8. 填充颜色
+        `ax.fill(angles, values, c=colors, alpha=0.25)`
+    9. 设置图标上的角度划分刻度，为每个数据点处添加标签
+        `ax.set_thetagrids(angles * 180/np.pi, feature)`
+    10. 设置雷达图的范围
+        `ax.set_ylim(0,5)`
+    11. 添加标题
+        `plt.title('活动前后员工状态表现')`
+    12. 添加网格线
+        `ax.grid(True)`
+        `plt.show()`
+
 
 ## 其他操作
 ### 子图加标题

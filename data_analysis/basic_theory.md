@@ -5,9 +5,17 @@
   
 # Pandas
 
-df.agg(func，axis = 0) - 聚合函数
+- 聚合函数
+    `df.agg(func，axis = 0) `
 
 # numpy
+
+- 在start和stop之间返回均匀间隔的数据
+    `numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0)`
+- 对array进行拼接的函数
+    `numpy.concatenate((a1, a2, ...), axis=0, out=None)`
+
+
 
 
 # 数据清理 
