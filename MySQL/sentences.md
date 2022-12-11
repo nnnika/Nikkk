@@ -62,10 +62,10 @@ char长度固定，verchar长度可变（节约空间）
 
 # 3.DQL数据库操作（dataBase query language(数据查询语言)）
 ## 多条件查询连接关键字
-（and, or，not(取反)）
+（and, or，not(取反)） \
 `SELECT * FROM TABLE WHERE COL NOT BETWEEN '1' AND '2'`
 ## 模糊查询
-（%表示任意多个字符，_表示一个字符）
+（%表示任意多个字符，_表示一个字符） \
 `SELECT * FROM TABLE WHERE COL LIKE '%12-01'`
 ## 查询去重复
 `SELECT DISTINCT * FROM TABLE`
@@ -75,11 +75,14 @@ char长度固定，verchar长度可变（节约空间）
 获得当前时间 用 now() 或者 sysdate()
 向日期类型的列添加数据时，可以通过字符串类型赋值（字符串格式必须为yyyy-MM-dd hh:mm:ss）
 ## 字符串函数
-UPPER(), LOWER()
-`SELECT UPPER(NAME) FROM TABLE`
-substring()截取字符串，concat(col,col)合并字符串
-`SELECT SUBBSTRING(NAME, 1, 1) FROM TABLE`
+UPPER(), LOWER() \
+`SELECT UPPER(NAME) FROM TABLE` \
+substring()截取字符串，concat(col,col)合并字符串 \
+e.g. `select distinct(city) from station where substring(city, 1, 1) in ('a', 'e', 'i', 'o', 'u'); ` \
+或者： `SELECT left(NAME, 1) FROM TABLE` 从左边数起第一个 \
 `SELECT CONCAT(ID, '-', NAME) FROM TABLE`
+# 判断字符串是否包含某个字符串
+`SELECT * FROM ‘表名’ WHERE LOCATE(‘包含的字符串’,‘字段’) > 0`
 ## 分组查询（group by）
 只有出现 group by 时才可以使用 having（对分组后的数据进行过滤）
 `SELECT ID, COUNT(NUMBER), TYPE FROM TABLE WHERE ID >= 1 GROUP BY TYPE HAVING COUNT(NUMBER)>0`
@@ -125,9 +128,9 @@ on delete cascade (级联删除)
 
 连接条件
 1.where：是在两张表产生笛卡尔积后，在通过条件来对生成的笛卡尔积进行筛选的（效率不高）
-select * from student inner join class where student.cls_id = class.class_id
+`select * from student inner join class where student.cls_id = class.class_id`
 2.on : 通过on设置两张表进行连接查询的匹配条件（效率高）
-select * from student inner join class on student.cls_id = class.class_id 
+`select * from student inner join class on student.cls_id = class.class_id` 
  结果：只获取两张表中匹配条件成立的数据，任意一张表在另一张表，如果没有找到对应的匹配则不会出现在查询结果中
 
 ### 左连接 (left join) 右连接（right join）

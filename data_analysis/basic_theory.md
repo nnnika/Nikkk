@@ -6,7 +6,7 @@
 # Pandas
 
 - 聚合函数
-    `df.agg(func，axis = 0) `
+    `df.agg(func，axis = 0) `   e.g. `L_avg = df0.groupby('labels').agg({'L':np.mean})`
 
 # numpy
 

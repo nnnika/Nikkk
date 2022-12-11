@@ -1,11 +1,13 @@
 # 聚类数据集
 # 使用 make_classification ()函数创建一个测试二分类数据集。
 from numpy import where
-from sklearn.datasets import make_classification
+import sklearn
 from matplotlib import pyplot
 
+# -------------------------------------------------------------------------------- #
+
 # 定义数据集
-X, y = make_classification(
+X, y = sklearn.datasets.make_classification(
     n_samples=1000,
     n_features=2,
     n_informative=2,
@@ -60,6 +62,28 @@ for cluster in clusters:
 pyplot.show()
 pyplot.close()
 
+# -------------------------------------------------------------------------------- #
+
+# K-Mean https://blog.csdn.net/qq_37634812/article/details/78678624
+# 优点：原理简单,速度快,对大数据集有比较好的伸缩性
+# 缺点：需要指定聚类(数量K), 对异常值敏感, 对初始值敏感
+
+sklearn.cluster.KMeans(n_clusters=8,   # 簇的个数，即你想聚成几类，下面的都不太重要
+                       init='k-means++', n_init=10, max_iter=300, tol=0.0001, precompute_distances='auto', verbose=0,
+                       random_state=None, copy_x=True, n_jobs=1, algorithm='auto'
+                       )
+
+
+# 中心点的选择
+# k-meams算法的能够保证收敛，但不能保证收敛于全局最优点，当初始中心点选取不好时，只能达到局部最优点，整个聚类的效果也会比较差。可以采用以下方法：k-means中心点
+# 选择彼此距离尽可能远的那些点作为中心点；先采用层次进行初步聚类输出k个簇，以簇的中心点的作为k-means的中心点的输入。
+# 多次随机选择中心点训练k-means，选择效果最好的聚类结果（聚类轮廓系数判断）。
+
+# k值的选取 （n_clusters字段）
+# k-means的误差函数有一个很大缺陷，就是随着簇的个数增加，误差函数趋近于0
+
+# 当数据量很大的时候，Kmeans 显然还是很弱的，会比较耗费内存速度也会收到很大影响。
+# scikit-learn 提供了MiniBatchKMeans算法，大致思想就是对数据进行抽样，每次不使用所有的数据来计算，这就会导致准确率的损失。
 
 
 
