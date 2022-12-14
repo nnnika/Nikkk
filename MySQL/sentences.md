@@ -192,5 +192,61 @@ UNION的基本语法：
 `SELECT * FROM TABLE_A UNION SELECT * FROM TABLE_B`
 
 
+## group by & having 
+`SELECT *|字段列表 FROM 表名 [WHERE 子句] [GROUP BY 子句][HAVING 子句][ORDER BY 子句][LIMIT 子句]`
+使用了having必须使用group by，但是使用group by 不一定使用having。
+* having是在分好组后找出特定的分组，通常是以筛选聚合函数的结果，如sum(a) > 100等 
+* 分组函数常用到的聚合函数：
+    1. MIN 最小值 
+    2. MAX 最大值 
+    3. SUM 求和
+    4. AVG 求平均
+    5. COUNT 计数
+* 不允许使用双重聚合函数，所以在对分组进行筛选的时候，可以用order by 排序，然后用limit也可以找到极值。
+
+## 行转列，列转行：改变表格结构
+https://blog.csdn.net/m0_68850571/article/details/124300784 \
+行转列用case...when或if分类讨论, group by进行分组 。 sum/max为聚合作用
+
+    select 
+        date, 
+        sum(if(新列表名='旧列表名1', 1, 0)) '旧列表名1',
+        sum(if(新列表名='旧列表名2', 1, 0)) '旧列表名2'
+    from table
+    group by date;
+
+    select  name,
+            max(case when subject='语文' then score else 0  end) as 语文,
+            max(case when subject='数学' then  score else 0 end) as 数学, 
+            max(case when subject='英语' then score else 0  end) as 英语 
+    from test 
+    group by name;
+列转行用union或union all将多列的字段整合到一行。
+
+    select product_id, 'store1' as store, store1 as price from Products where store1 is not null
+    union all
+    select product_id, 'store2' as store, store2 as price from Products where store2 is not null
+    union all
+    select product_id, 'store3' as store, store3 as price from Products where store3 is not null
+
+## 取第二大的值
+方法一： 排除掉最大值，那就是第二大
+
+    select
+        max(salary) as SecondHighestSalary
+    from Employee
+    where salary < (select max(salary) from Employee) 
+    order by salary desc
+    limit 2
+
+方法二: 采用limit offset(跳过)来处理
+
+    select (
+        select distinct salary
+        from employee
+        order by salary DESC
+        limit 1 offset 1
+    ) as secondhighestsalary;
+
 
 
