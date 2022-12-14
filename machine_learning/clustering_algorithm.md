@@ -21,7 +21,7 @@ scikit-learn 库提供了一套不同的聚类算法供选择。下面列出了1
 
         silhouette_score(res_std, clf.labels_))
 
-$ s_i = \frac{b_i - a_i}{max(a_i, b_i)}$
+$ s_i = \frac{b_i - a_i}{max(a_i, b_i)} $
 * a_i(样本i的簇内不相似度) - 计算样本i到同簇其他样本的平均距离。ai 越小，说明样本i越应该被聚类到该簇。
 * b_i(样本i的簇间不相似度) - 计算样本i到其他簇的所有样本的平均距离，。bi越大，说明样本i越不属于其他簇。
 

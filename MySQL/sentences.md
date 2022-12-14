@@ -55,9 +55,19 @@ char长度固定，verchar长度可变（节约空间）
 `INSERT INTO TABLE VALUES ('1', '张三')`
 `INSERT INTO TABLE(ID) VALUES ('张三')`
 ## 删除语句
-`DELECT FROM TABLE`
+`DELETE FROM TABLE`
+删除重复的邮件
+`delete p1
+ from Person p1, Person p2
+ where p1.email = p2.email and p1.id > p2.id`
 ## 修改语句
 `UPDATE TABLE SET ID='1', NAME='张三' WHERE ID='1'`
+男女性别互换
+`update Salary set sex = 
+     case
+     when sex = 'f' then 'm'
+     else 'f'
+     end`
 
 
 # 3.DQL数据库操作（dataBase query language(数据查询语言)）
@@ -74,13 +84,25 @@ char长度固定，verchar长度可变（节约空间）
 ## 日期函数
 获得当前时间 用 now() 或者 sysdate()
 向日期类型的列添加数据时，可以通过字符串类型赋值（字符串格式必须为yyyy-MM-dd hh:mm:ss）
+## 判断归类（打标签）
+`if(T1.grade >= 8, T2.name, null) as name`  如果成绩小于8，用null替换名字 \
+或者     `case when T1.grade>=8 then T2.name else 'NULL' end as name`
+`T1 inner join T2 on T2.marks between T1.min_mark and T2.max_mark` 表关联并打标签
 ## 字符串函数
-UPPER(), LOWER() \
-`SELECT UPPER(NAME) FROM TABLE` \
-substring()截取字符串，concat(col,col)合并字符串 \
+- UPPER(), LOWER() \
+`SELECT UPPER(NAME) FROM TABLE` 
+- substring()截取字符串，concat(col,col)合并字符串 \
 e.g. `select distinct(city) from station where substring(city, 1, 1) in ('a', 'e', 'i', 'o', 'u'); ` \
 或者： `SELECT left(NAME, 1) FROM TABLE` 从左边数起第一个 \
 `SELECT CONCAT(ID, '-', NAME) FROM TABLE`
+修复名字，只有第一个字符是大写的，其余都是小写的
+`select
+     user_id,
+     concat(upper(left(name, 1)), lower(substring(name, 2, length(name)))) as name
+ from Users`
+- Group_concat() 将一列的数据转成一行列表 [a,b,c]
+group_concat( [distinct] 要连接的字段 [order by 排序字段 asc/desc ] [separator '分隔符'] )
+  e.g. `group_concat(distinct product order by product asc separator ',') as products`
 # 判断字符串是否包含某个字符串
 `SELECT * FROM ‘表名’ WHERE LOCATE(‘包含的字符串’,‘字段’) > 0`
 ## 分组查询（group by）
@@ -88,6 +110,7 @@ e.g. `select distinct(city) from station where substring(city, 1, 1) in ('a', 'e
 `SELECT ID, COUNT(NUMBER), TYPE FROM TABLE WHERE ID >= 1 GROUP BY TYPE HAVING COUNT(NUMBER)>0`
 ## 分页查询（limit）
 `SELECT * FROM TABLE LIMIT 100`
+
 
 # 数据表的关联关系
 1. 一对一关联
@@ -135,7 +158,7 @@ on delete cascade (级联删除)
 
 ### 左连接 (left join) 右连接（right join）
 结果：显示左边表中的所有数据，如果在右表中有对应的匹配关系，则进行匹配，如果右表中不存在匹配数据，则显示为null
-select * from student left join class on student.cla_id = class.class_id
+`select * from student left join class on student.cla_id = class.class_id`
 
 ## 子查询/嵌套查询
 ### 单列多行（作为查询条件）
@@ -147,7 +170,26 @@ select * from (select * from student where cla_id in (select class_id from class
 
 
 
+## JOIN和UNION区别
+- join 是两张表做交连后里面条件相同的部分记录产生一个记录集。 （横向延伸）
+- union是产生的两个记录集(字段要一样的)并在一起，成为一个新的记录集 。 （纵向延伸）
+### JOIN
+join [等同于 inner join] 取两个表的交集
+full join [等同于 full outer join] 取两个表的并集，对于没有匹配的记录默认为 NULL （mysql用不了？）
+left(right) join [等同于 left outer join] 产生表A的完全集，而B表中匹配的则有值，没有匹配的则以null值取代。
+cross join 笛卡尔积，N*M的一个结果集
+### UNION
+union 与 union all
+        UNION 操作符用于合并两个或多个 SELECT 语句的结果集。
+        请注意，UNION 内部的 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每条 SELECT 语句中的列的顺序必须相同。
+        UNION和UNION ALL的区别：
+            union 检查重复
+            union all 不做检查
 
+JOIN的基本语法：
+`Select table1.* FROM table1 JOIN table2 ON table1.id=table2.id`
+UNION的基本语法：
+`SELECT * FROM TABLE_A UNION SELECT * FROM TABLE_B`
 
 
 
