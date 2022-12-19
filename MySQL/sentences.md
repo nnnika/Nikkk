@@ -55,14 +55,14 @@ char长度固定，verchar长度可变（节约空间）
 `INSERT INTO TABLE VALUES ('1', '张三')`
 `INSERT INTO TABLE(ID) VALUES ('张三')`
 ## 删除语句
-`DELETE FROM TABLE`
-删除重复的邮件
+`DELETE FROM TABLE` \
+删除重复的邮件 \
 `delete p1
  from Person p1, Person p2
  where p1.email = p2.email and p1.id > p2.id`
 ## 修改语句
-`UPDATE TABLE SET ID='1', NAME='张三' WHERE ID='1'`
-男女性别互换
+`UPDATE TABLE SET ID='1', NAME='张三' WHERE ID='1'` \
+男女性别互换 \
 `update Salary set sex = 
      case
      when sex = 'f' then 'm'
