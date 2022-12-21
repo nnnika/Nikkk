@@ -56,6 +56,8 @@ DAY(date)返回指定日期的天数值
 
 CEILING(num_expr) 返回大于或等于数值表达式的最小整数。
 FLOOR(num_expr) 返回小于或等于数值表达式的最大整数
+FIRST() 返回在指定的域中第一个记录的值
+LAST() 返回在指定的域中最后一个记录的值
 
 ABS(num_expr) 返回数值表达式的绝对值。
 SIGN(num_expr) 对正数执行+1操作,对负数和零执行-1操作。
@@ -65,6 +67,8 @@ RAND([seed]) 随机返回的到之间的近似浮点值,可以对seed指定为�
 SQUARE(float_expr) 返回浮点表达式的平均值。
 SQRT(float_expr) 返回指定的近似浮点表达式的平方根。
 POWER(num_expr,y) 返回幂为y的数值表达式的值。
+STDEV() 返回基于样本估计标准偏差
+VAR() 返回基于样本估计方差
 
 ACOS(float_expr) 返回角(以弧度表示),它的余弦值近似于指定的浮点表达式。
 COS(float_expr) 返回以浮点表达式表示的近似于指定角度(以弧度表示)的余弦三角函数的值。

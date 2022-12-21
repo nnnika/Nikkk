@@ -201,7 +201,7 @@ UNION的基本语法：
     2. MAX 最大值 
     3. SUM 求和
     4. AVG 求平均
-    5. COUNT 计数
+    5. COUNT 计数   --e.g.查找重复邮件
 * 不允许使用双重聚合函数，所以在对分组进行筛选的时候，可以用order by 排序，然后用limit也可以找到极值。
 
 ## 行转列，列转行：改变表格结构
@@ -247,6 +247,59 @@ https://blog.csdn.net/m0_68850571/article/details/124300784 \
         order by salary DESC
         limit 1 offset 1
     ) as secondhighestsalary;
+
+## 比较日期数据
+1. 用cross join合并相同的数据表，然后用datediff函数进行条件筛选
+2. 直接用dateadd函数
+
+## 近30日每日活跃用户数
+    select date, count(distinct user_id) from table
+    where daydiff('30日前', date) < 30 and daydiff('30日前', date) >= 0
+    group by date
+
+## pivot 语法
+SELECT <非透视的列>,
+    [第一个透视的列] AS <列名称>,
+    [第二个透视的列] AS <列名称>,
+    ...
+    [最后一个透视的列] AS <列名称>,
+FROM
+    (<生成数据的 SELECT 查询>)
+    AS <源查询的别名>
+PIVOT
+(
+    <聚合函数>(<要聚合的列>)
+FOR
+[<包含要成为列标题的值的列>]
+    IN ( [第一个透视的列], [第二个透视的列],
+    ... [最后一个透视的列])
+) AS <透视表的别名>
+<可选的 ORDER BY 子句>; 
+
+    # 例子：更改表格格式为名字行索引，周列索引
+    select Name ,
+    sum(case when  IncomeDay='MoN' then IncomeAmount else 0 end) MON,
+    sum(case when  IncomeDay='TUE' then IncomeAmount else 0 end) TUE,
+    sum(case when  IncomeDay='WED' then IncomeAmount else 0 end) WED,
+    sum(case when  IncomeDay='THU' then IncomeAmount else 0 end) THU,
+    sum(case when  IncomeDay='FRI' then IncomeAmount else 0 end) FRI,
+    sum(case when  IncomeDay='SAT' then IncomeAmount else 0 end) SAT,
+    sum(case when  IncomeDay='SUN' then IncomeAmount else 0 end) SUN
+    from DailyIncome group by VendorId
+    # 可以简化成
+    select * from DailyIncome ----第一步
+    pivot 
+    (
+    sum (IncomeAmount) ----第三步
+    for IncomeDay in ([MON],[TUE],[WED],[THU],[FRI],[SAT],[SUN]) ---第二步
+    ) as AvgIncomePerDay
+
+行列转换
+
+    select * from Pivot_test 
+    PIVOT(MAX(value) for Pivot_column in (A,B,C,D)) tem
+
+
 
 
 
