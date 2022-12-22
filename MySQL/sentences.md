@@ -299,6 +299,26 @@ FOR
     select * from Pivot_test 
     PIVOT(MAX(value) for Pivot_column in (A,B,C,D)) tem
 
+## over后的写法：
+一类是聚合开窗函数,与group by 子句不同，partition by 子句创建的分区是独立于结果集的，
+创建的分区是进行聚合运算的，而不同的开窗函数所创建的分区互不干扰。在同一个select语句中可以同时使用多个开窗函数。
+
+    select id,name,class,score,count(name) over(partition by class) from students
+    结果：1，xxx，A，90，2 （A班级有两个同学）
+
+一类是排序开窗函数。
+   over（order by salary） 按照salary排序进行累计，order by是个默认的开窗函数
+
+    select id,name,class,score,
+       row_number() over(order by score) as rownum,
+       rank() over(order by score) as rank,
+       dense_rank() over(order by score) as dense_rank,
+       ntile(6) over(order by score) as ntile from students
+对于row_number()来说,就是得出排序结果的序号。
+对于rank()来说,就是得到排序结果的排名号,如果有两个第二名的话,就不会有第三名,有三个第二名就不会有第四名。
+对于dense_rank()来说,就是每个人只有一种排名,然后出现两个两个并列第一的情况,这时候排在第一名后面的人就是第二名。
+对于ntile(6)来说,就是分成6等分然后分成6个组,并显示组所在的序号。
+
 
 
 
