@@ -5,5 +5,5 @@
 # 数据挖掘
 
 # logistic回归、SVM、决策树（优缺点，特征工程相关知识：特征清洗+衍生+选择+评估）
-# spark,hive
-# sql 存储过程
+# spark/pyspark,hive
+# ETL
