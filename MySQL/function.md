@@ -55,10 +55,11 @@ DAY(date)返回指定日期的天数值
 ## 四、数学函数
 
 CEILING(num_expr) 返回大于或等于数值表达式的最小整数。
-FLOOR(num_expr) 返回小于或等于数值表达式的最大整数
+FLOOR(num_expr) 返回小于或等于数值表达式的**最大整数**
 FIRST() 返回在指定的域中第一个记录的值
 LAST() 返回在指定的域中最后一个记录的值
 
+MOD(a, b) a / b 的余数(即 a % b )  -- =1奇數, =0偶數
 ABS(num_expr) 返回数值表达式的绝对值。
 SIGN(num_expr) 对正数执行+1操作,对负数和零执行-1操作。
 ROUND(num_expr,length) 对数值表达式截取指定的整数长度,返回四舍五入后的值。
@@ -160,3 +161,47 @@ USER_NAME(['user_id']) 返回用户的数据库名称。
 
 TEXTPTR(col_name) 返回varbinary格式的文本指针值。对文本指针进行检查以确保它指向第一个文本页。
 TEXTVALID('table_name.col_name',text_ptr)检查给定的文本指针是否有效。返回表示有效,返回表示指针无效。
+
+
+## 其他數學函數
+### 中位數
+求中位數位置
+
+    select num,
+        floor((count(*)+1)/2) as start, 
+        floor((count(*)+2)/2) as end  
+    from tmp 
+    group by num 
+    order by num;
+
+求中位數
+1. 利用窗口函數
+`
+    select avg(num)
+    from 
+    (
+        select num, 
+            row_number() over(order by num) as rn, 
+            count(*) over() as n
+        from tmp
+    )as t 
+    where rn in (floor(n/2)+1,if(mod(n,2) = 0,floor(n/2),floor(n/2)+1))
+`
+先使用row_number()函数对数据从小到大进行排序标号，用count()顺便实现数据总数的记录，假设为n个。 
+如果n为奇数，则取最中间一个值作为中位数，也就是编号为floor(n/2)+1的数，
+如果n为偶数，需要取中间位置的两个数，也就是floor(n/2)和floor(n/2)+1的两个数。
+因此可以将floor(n/2)+1作为一个rn的取值，另一个通过判断奇偶性来选择。
+
+2. 正排倒排都是中位數
+`
+    select avg(num)
+    from 
+    (
+        select num 
+            ,row_number() over(order by num) as rn1  # 正排
+            ,row_number() over(order by num desc) as rn2  # 倒排
+        from tmp
+    )as t 
+    where rn1 = rn2 or abs(rn1-rn2) = 1
+`
+
