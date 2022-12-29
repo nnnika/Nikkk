@@ -197,11 +197,12 @@ TEXTVALID('table_name.col_name',text_ptr)检查给定的文本指针是否有效
     select avg(num)
     from 
     (
-        select num 
-            ,row_number() over(order by num) as rn1  # 正排
-            ,row_number() over(order by num desc) as rn2  # 倒排
+        select num,
+            row_number() over(order by num) as rn1,  # 正排
+            row_number() over(order by num desc) as rn2  # 倒排
         from tmp
     )as t 
-    where rn1 = rn2 or abs(rn1-rn2) = 1
+    where rn1 = rn2 or abs(cast(rn1 as signed) - cast(rn2 as signed)) = 1
 `
+不加cast(as signed)会报错：BIGINT UNSIGNED value is out of range
 
